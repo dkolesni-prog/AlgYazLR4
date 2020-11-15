@@ -1,55 +1,128 @@
+#include <algorithm>
+
+#include <ctime>
+
 #include <iostream>
 
 #include <vector>
 
-#include<cstdlib>
+#include <cstdlib>
 
+void printVector (std::vector <int>& vec ) {
 
-void bubblesort(std::vector<int>& vect){
-    bool isSorted = 0;
-    while(isSorted != 1) {
-        isSorted = 1;
-        for(unsigned int i = 0; i < vect.size(); i++) {
-            if (vect[i] > vect[i + 1]) {
-                std::cout << i << " = " << vect[i] << ", " << i << "= " << vect[i+1] << std::endl;
-                int temp = vect[i];
-                vect[i] = vect[i + 1];
-                vect[i + 1] = temp;
-                isSorted = 0;
+    for (int i = 0; i < vec.size(); i++){
+        std::cout << vec[i] << " ";
+    }
+    std::cout << std::endl;
+}
+void fillVector (int size, std::vector <int>& vec){ // заполнение вектора случайными величинами
+    srand ( time(NULL) );
+    int b = 0;
+    for (int i = 0; i < size; i++){
+         b = rand() % 201 - 100;
+        vec.push_back(b);
+    }
+    std::cout << "The initial vector is " <<std::endl;
+    printVector(vec);
+}
+
+void insertionSSort(std::vector <int>& vec) {
+for (int i = 0; i < vec.size(); i++){
+    int j = i - 1;
+    while( (j >= 0) && (vec[j] > vec[j + 1]) ){
+        std::swap(vec[j], vec[j + 1]);
+        j--;
+    }
+}
+std::cout << "The INSORTED vector is" << std::endl;
+printVector(vec);
+}
+
+void bubbleSort (std::vector <int>& vec){
+    for (int j = 0; j <= vec.size() - 2; j++){
+        for ( int i = 0; i <= vec.size() - j - 2; i++){
+            if (vec[i] > vec[i + 1]){
+                std::swap (vec[i], vec[i + 1]);
+            }
+        }
+    }
+    std::cout << "Bubble-sorted vector is " <<std::endl;
+    printVector(vec);
+}
+/*void insertionSort(std::vector <int>& vec){
+    int i= 1;
+    int j = 1;
+        while (vec[j] < vec[j - i]){
+            for ( i = 1; i < vec.size(); i++) {
+                std::swap(vec[i], vec[i - 1]);
+                j++;
             }
         }
 
+
+
+    std::cout << "INSORTED vector is " <<std::endl;
+    printVector(vec);
+}*/
+
+
+void mergeSort (std::vector <int>& vec){
+    if (!(vec.size() == 1)) {
+        std::vector<int> left;
+        std::vector<int> right;
+        int temp = 0;
+        for (int i = 0; i < (vec.size() / 2); i++) {
+            temp = vec[i];
+            left.push_back(temp);
+        }
+        for (int i = (vec.size() / 2); i < vec.size(); i++) {
+            temp = vec[i];
+            right.push_back(temp);
+        }
+        mergeSort(left);
+        mergeSort(right);
+        int L = 0;
+        int R = 0;
+        int V = 0;
+        while(L<left.size() && R<right.size()){
+            if (left[L] < right[R]){
+                vec[V] = left[L];
+                L++;
+            } else {
+
+                vec[V] = right[R];
+                R++;
+            }
+            V++;
+        }
+
+        while(L<left.size()){
+            vec[V] = left[L];
+            L++;
+            V++;
+        }
+        while(R<right.size()){
+            vec[V] = right[R];
+            R++;
+            V++;
+        }
     }
-    return ;
+
+
 }
 
 
+int main() {
+    std::vector <int> vec1;
+    fillVector (30, vec1);
 
-        int main() {
-    std::srand(std::time(nullptr));
-    int size; //Размер Вектора
-    std::cout << "Задача 1" << std::endl;
-    std::cout << "Set size" << std::endl;
-    std::cin >> size;
-    std::vector<int> vec0; //Вектор
-    std::vector < int > vec1(size); // Задача 1
-    std::vector < int > vec2(size); // Задача 2
-    std::vector < int > vec3(size); // Задача 3
-    int n; //Элемент вектора
-    std::cout << "Size is " << size << std::endl;
-    std::cout << "Initialize vector" << std::endl;
+    //bubbleSort(vec1);
+    insertionSSort(vec1);
+    //mergeSort(vec1);
+    //std::cout << "Merge-sorted vector is " << std::endl;
 
-    for (int i = 0; i < size; i++) {
-        vec0.push_back(std::rand() % 201 - 100);
-    }
-    for (int i = 0; i < static_cast<int>(vec0.size()); i++) {
 
-        std::cout << " " << vec0[i] << " ";
-    }
-    bubblesort(vec0);
-    for (int i = 0; i < static_cast<int>(vec0.size()); i++) {
-        std::cout << " " << vec0[i] << " ";
-    }
+
 
     return 0;
 }
